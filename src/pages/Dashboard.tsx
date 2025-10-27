@@ -6,14 +6,15 @@ import { usePosts } from '../hooks/usePosts';
 import { useProfile } from '../hooks/useProfile';
 import type { Post } from '../types';
 import { Button } from '../components/ui/button';
-import { Plus } from 'lucide-react';
+import { Alert, AlertDescription } from '../components/ui/alert';
+import { Plus, AlertCircle } from 'lucide-react';
 
 export function Dashboard() {
   const { profile } = useProfile();
   const isAdmin = profile?.role === 'admin';
 
   // Fetch posts - admins see all posts, creators see only their own
-  const { posts, isLoading, createPost, updatePost } = usePosts();
+  const { posts, isLoading, error, createPost, updatePost } = usePosts();
 
   // Modal state
   const [modalOpen, setModalOpen] = useState(false);
@@ -80,6 +81,20 @@ export function Dashboard() {
             New Post
           </Button>
         </div>
+
+        {/* Error Alert */}
+        {error && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+              Failed to load posts: {error instanceof Error ? error.message : 'Unknown error'}
+              <br />
+              <span className="text-xs mt-2 block">
+                If you're an admin, you may need to run the RLS fix script. Check the console for details.
+              </span>
+            </AlertDescription>
+          </Alert>
+        )}
 
         {/* Calendar */}
         {isLoading ? (

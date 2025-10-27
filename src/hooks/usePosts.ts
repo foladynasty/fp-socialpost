@@ -28,10 +28,15 @@ export function usePosts(filterStatus?: PostStatus | PostStatus[]) {
 
       const { data, error } = await query;
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching posts:', error);
+        throw error;
+      }
       return data as Post[];
     },
     enabled: !!user,
+    retry: 1,
+    staleTime: 30000, // 30 seconds
   });
 
   // Create post
