@@ -1,13 +1,110 @@
+import { useState } from 'react';
 import { AppLayout } from '../components/layout/AppLayout';
+import { ScheduleCalendar } from '../components/calendar/ScheduleCalendar';
+import { PostModal } from '../components/posts/PostModal';
+import { usePosts } from '../hooks/usePosts';
+import { useProfile } from '../hooks/useProfile';
+import type { Post } from '../types';
+import { Button } from '../components/ui/button';
+import { Plus } from 'lucide-react';
 
 export function Dashboard() {
+  const { profile } = useProfile();
+  const isAdmin = profile?.role === 'admin';
+
+  // Fetch posts - admins see all posts, creators see only their own
+  const { posts, isLoading, createPost, updatePost } = usePosts();
+
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [defaultDate, setDefaultDate] = useState<Date | undefined>();
+
+  // Handle clicking on an empty date slot
+  const handleSelectSlot = (date: Date) => {
+    setSelectedPost(null);
+    setDefaultDate(date);
+    setModalOpen(true);
+  };
+
+  // Handle clicking on an existing post
+  const handleSelectEvent = (post: Post) => {
+    setSelectedPost(post);
+    setDefaultDate(undefined);
+    setModalOpen(true);
+  };
+
+  // Handle creating new post
+  const handleCreatePost = () => {
+    setSelectedPost(null);
+    setDefaultDate(undefined);
+    setModalOpen(true);
+  };
+
+  // Handle modal close
+  const handleModalClose = () => {
+    setModalOpen(false);
+    setSelectedPost(null);
+    setDefaultDate(undefined);
+  };
+
+  // Handle form submission
+  const handleSubmit = async (data: any) => {
+    if (selectedPost) {
+      // Update existing post
+      await updatePost.mutateAsync({
+        id: selectedPost.id,
+        data,
+      });
+    } else {
+      // Create new post
+      await createPost.mutateAsync(data);
+    }
+  };
+
   return (
     <AppLayout>
       <div className="mx-auto max-w-7xl">
-        <h1 className="mb-6 text-3xl font-bold text-gray-900">Dashboard</h1>
-        <div className="rounded-lg border border-dashed border-gray-300 p-12 text-center">
-          <p className="text-gray-500">Calendar component will go here</p>
+        {/* Header */}
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+            <p className="mt-1 text-sm text-gray-500">
+              {isAdmin
+                ? 'View and manage all scheduled posts'
+                : 'Manage your scheduled posts'}
+            </p>
+          </div>
+          <Button onClick={handleCreatePost}>
+            <Plus className="mr-2 h-4 w-4" />
+            New Post
+          </Button>
         </div>
+
+        {/* Calendar */}
+        {isLoading ? (
+          <div className="flex h-96 items-center justify-center rounded-lg border">
+            <div className="text-center">
+              <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+              <p className="mt-4 text-sm text-muted-foreground">Loading posts...</p>
+            </div>
+          </div>
+        ) : (
+          <ScheduleCalendar
+            posts={posts || []}
+            onSelectSlot={handleSelectSlot}
+            onSelectEvent={handleSelectEvent}
+          />
+        )}
+
+        {/* Post Modal */}
+        <PostModal
+          open={modalOpen}
+          onClose={handleModalClose}
+          onSubmit={handleSubmit}
+          post={selectedPost}
+          defaultDate={defaultDate}
+        />
       </div>
     </AppLayout>
   );

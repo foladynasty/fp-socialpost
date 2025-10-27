@@ -1,0 +1,77 @@
+/* Custom styles for react-big-calendar */
+
+.custom-calendar {
+  font-family: inherit;
+}
+
+.custom-calendar .rbc-header {
+  padding: 8px 4px;
+  font-weight: 600;
+  border-bottom: 2px solid hsl(var(--border));
+}
+
+.custom-calendar .rbc-today {
+  background-color: hsl(var(--accent));
+}
+
+.custom-calendar .rbc-off-range-bg {
+  background-color: hsl(var(--muted));
+}
+
+.custom-calendar .rbc-event {
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.custom-calendar .rbc-event:hover {
+  opacity: 1 !important;
+}
+
+.custom-calendar .rbc-month-view {
+  border: 1px solid hsl(var(--border));
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.custom-calendar .rbc-date-cell {
+  padding: 4px;
+}
+
+.custom-calendar .rbc-button-link {
+  color: inherit;
+}
+
+.custom-calendar .rbc-show-more {
+  color: hsl(var(--primary));
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.custom-calendar .rbc-toolbar {
+  margin-bottom: 16px;
+  padding: 8px 0;
+}
+
+.custom-calendar .rbc-toolbar button {
+  padding: 6px 12px;
+  border: 1px solid hsl(var(--border));
+  background-color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.custom-calendar .rbc-toolbar button:hover {
+  background-color: hsl(var(--accent));
+}
+
+.custom-calendar .rbc-toolbar button.rbc-active {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+
+.custom-calendar .rbc-toolbar-label {
+  font-size: 18px;
+  font-weight: 600;
+}
