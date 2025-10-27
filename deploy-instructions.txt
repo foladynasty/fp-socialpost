@@ -1,0 +1,23 @@
+==========================================
+VERCEL DEPLOYMENT INSTRUCTIONS
+==========================================
+
+Run these commands in your terminal:
+
+1. Login to Vercel:
+   vercel login
+
+2. Deploy to preview:
+   vercel
+
+3. Set environment variables (when prompted or manually):
+   - VITE_SUPABASE_URL
+   - VITE_SUPABASE_ANON_KEY
+
+4. Deploy to production:
+   vercel --prod
+
+==========================================
+Your app will be live at:
+https://fp-socialpost-xxx.vercel.app
+==========================================
