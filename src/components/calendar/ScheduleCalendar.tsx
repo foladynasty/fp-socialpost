@@ -53,16 +53,27 @@ export function ScheduleCalendar({
   const eventStyleGetter = (event: CalendarEvent) => {
     const status = event.resource.status;
     let backgroundColor = '#9ca3af'; // gray for draft
+    let textColor = 'white';
 
     switch (status) {
       case 'pending':
         backgroundColor = '#fbbf24'; // yellow
+        textColor = '#78350f';
         break;
       case 'approved':
         backgroundColor = '#10b981'; // green
         break;
       case 'rejected':
         backgroundColor = '#ef4444'; // red
+        break;
+      case 'publishing':
+        backgroundColor = '#3b82f6'; // blue
+        break;
+      case 'published':
+        backgroundColor = '#16a34a'; // dark green
+        break;
+      case 'failed':
+        backgroundColor = '#dc2626'; // dark red
         break;
     }
 
@@ -71,7 +82,7 @@ export function ScheduleCalendar({
         backgroundColor,
         borderRadius: '4px',
         opacity: 0.9,
-        color: status === 'pending' ? '#78350f' : 'white',
+        color: textColor,
         border: 'none',
         display: 'block',
         fontSize: '12px',
@@ -95,6 +106,15 @@ export function ScheduleCalendar({
         </Badge>
         <Badge variant="rejected">
           Rejected ({statusCounts.rejected || 0})
+        </Badge>
+        <Badge variant="publishing">
+          Publishing ({statusCounts.publishing || 0})
+        </Badge>
+        <Badge variant="published">
+          Published ({statusCounts.published || 0})
+        </Badge>
+        <Badge variant="failed">
+          Failed ({statusCounts.failed || 0})
         </Badge>
       </div>
 

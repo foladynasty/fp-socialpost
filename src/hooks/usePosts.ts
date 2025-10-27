@@ -52,6 +52,7 @@ export function usePosts(filterStatus?: PostStatus | PostStatus[]) {
           image_url: postData.image_url,
           scheduled_date: postData.scheduled_date.toISOString(),
           status: postData.status || 'draft',
+          platforms: postData.platforms || ['linkedin'],
         })
         .select()
         .single();
@@ -70,6 +71,9 @@ export function usePosts(filterStatus?: PostStatus | PostStatus[]) {
       const updateData: any = { ...data };
       if (data.scheduled_date) {
         updateData.scheduled_date = data.scheduled_date.toISOString();
+      }
+      if (data.platforms) {
+        updateData.platforms = data.platforms;
       }
 
       const { data: updated, error } = await supabase

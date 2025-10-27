@@ -11,7 +11,15 @@ export interface Profile {
 }
 
 // Post types
-export type PostStatus = 'draft' | 'pending' | 'approved' | 'rejected';
+export type PostStatus = 'draft' | 'pending' | 'approved' | 'rejected' | 'publishing' | 'published' | 'failed';
+
+export type Platform = 'linkedin' | 'facebook' | 'instagram';
+
+export interface PublishedUrls {
+  linkedin?: string;
+  facebook?: string;
+  instagram?: string;
+}
 
 export interface Post {
   id: string;
@@ -21,6 +29,10 @@ export interface Post {
   scheduled_date: string;
   status: PostStatus;
   rejection_reason: string | null;
+  platforms: Platform[];
+  published_at: string | null;
+  published_urls: PublishedUrls | null;
+  publish_error: string | null;
   created_at: string;
   updated_at: string;
   // Joined data (when fetching with profile info)
@@ -33,6 +45,7 @@ export interface PostFormData {
   image_url?: string | null;
   scheduled_date: Date;
   status?: PostStatus;
+  platforms?: Platform[];
 }
 
 export interface ProfileUpdateData {
